@@ -8,10 +8,11 @@ import (
 )
 
 func getAlbums(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, "albums")
+	time_now := time.Now().String()
+	c.IndentedJSON(http.StatusOK, "albums    "+time_now)
 }
 func main() {
-	time.Now()
+
 	router := gin.Default()
 	router.GET("/albums", getAlbums)
 	router.Run("localhost:8080")
