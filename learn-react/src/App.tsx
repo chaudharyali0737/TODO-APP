@@ -1,26 +1,20 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+  return (<>
+    <img src="logo512.png" width="60px" height="60"   alt="logo" />
+    <nav>
+      <h1>MesissaSoft Services</h1>
+      <ul>
+        <li>Services</li>
+        <li>Pricing</li>
+        <li>About</li>
+
+      </ul>
+    </nav>
+  </>
+
   );
 }
-
-export default App;
+function React_
+export { App }
