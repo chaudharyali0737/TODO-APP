@@ -20,7 +20,7 @@ function Reakt_benifits() {
   return (
     <>
       <div>
-        <img src="logo512.png" width="60px" height="60" alt="logo" />
+        <img src="/logo512.png" width="60px" height="60" alt="logo" />
         <nav>
           <h1>fun Facts About React</h1>
           <ul>
