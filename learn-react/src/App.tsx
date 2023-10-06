@@ -16,7 +16,7 @@ function App() {
 
   );
 }
-function Reakt_benifits() {
+function React_benifits() {
   return (
     <>
       <div>
@@ -37,4 +37,4 @@ function Reakt_benifits() {
     </>
   );
 }
-export { App, Reakt_benifits }
+export { App, React_benifits }
