@@ -1,19 +1,26 @@
 package main
 
 import (
-	"net/http"
-	"time"
+	"api/db"
+	todocrud "api/todoCrud"
+	"log"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
-func getAlbums(c *gin.Context) {
-	time_now := time.Now().String()
-	c.IndentedJSON(http.StatusOK, "albums    "+time_now)
-}
 func main() {
-
+	db.Init()
+	err := db.TodoMigrations()
+	if err != nil {
+		log.Fatal(err)
+	}
 	router := gin.Default()
-	router.GET("/albums", getAlbums)
+	router.Use(cors.Default())
+	router.GET("/todos", todocrud.GetTodos)
+	router.GET("/todo/:id", todocrud.GetSingleTodos)
+	router.POST("/todo/insert", todocrud.Insert)
+	router.POST("/todo/update", todocrud.Update)
+	router.DELETE("/todo/delete/:id", todocrud.Delete)
 	router.Run("localhost:8080")
 }
