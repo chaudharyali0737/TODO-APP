@@ -42,7 +42,8 @@ func Insert(c *gin.Context) {
 	input := db.Todos{}
 	err := c.ShouldBindJSON(&input)
 	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+		response := fmt.Errorf("parsing payload error %w", err)
+		c.AbortWithError(http.StatusBadRequest, errors.New(response.Error()))
 	}
 	tx := db.DB.Model(db.Todos{}).Create(&input)
 	if tx.Error != nil {
@@ -54,11 +55,13 @@ func Update(c *gin.Context) {
 	var todo_data Todo
 	err := c.ShouldBindJSON(&todo_data)
 	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+		response := fmt.Errorf("parsing payload error %w", err)
+		c.AbortWithError(http.StatusBadRequest, errors.New(response.Error()))
 	}
 	tx := db.DB.Model(db.Todos{}).Where("id=?", todo_data.ID).Update("task", todo_data.Task)
 	if tx.Error != nil {
-		c.AbortWithError(http.StatusBadRequest, errors.New(fmt.Sprintf("update db error %w", tx.Error)))
+		response_error := fmt.Errorf("update db error %w", tx.Error)
+		c.AbortWithError(http.StatusBadRequest, errors.New(response_error.Error()))
 	}
 	c.AbortWithStatus(200)
 }
@@ -67,11 +70,13 @@ func Delete(c *gin.Context) {
 	var delete_entry *db.Todos
 	interger_id, err := strconv.Atoi(id)
 	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+		response := fmt.Errorf("parsing payload error %w", err)
+		c.AbortWithError(http.StatusBadRequest, errors.New(response.Error()))
 	}
 	tx := db.DB.Table("todos").Where("id=?", interger_id).Delete(&delete_entry)
 	if tx.Error != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, errors.New(fmt.Sprintf("delete db error %w", tx.Error)))
+		response_error := fmt.Errorf("delete db error %w", tx.Error)
+		c.AbortWithStatusJSON(http.StatusBadRequest, errors.New(response_error.Error()))
 	}
 	c.AbortWithStatus(200)
 }
