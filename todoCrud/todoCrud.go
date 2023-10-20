@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 type Todo struct {
@@ -21,7 +22,7 @@ type Todo struct {
 func GetTodos(c *gin.Context) {
 	result := []Todo{}
 	tx := db.DB.Model(db.Todos{}).Find(&result)
-	if tx.Error != nil || tx.RowsAffected == 0 {
+	if tx.Error != nil {
 		c.Status(http.StatusBadRequest)
 		return
 	}
@@ -74,6 +75,15 @@ func Delete(c *gin.Context) {
 		c.AbortWithError(http.StatusBadRequest, errors.New(response.Error()))
 	}
 	tx := db.DB.Table("todos").Where("id=?", interger_id).Delete(&delete_entry)
+	if tx.Error != nil {
+		response_error := fmt.Errorf("delete db error %w", tx.Error)
+		c.AbortWithStatusJSON(http.StatusBadRequest, errors.New(response_error.Error()))
+	}
+	c.AbortWithStatus(200)
+}
+func DeleteAll(c *gin.Context) {
+
+	tx := db.DB.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&db.Todos{})
 	if tx.Error != nil {
 		response_error := fmt.Errorf("delete db error %w", tx.Error)
 		c.AbortWithStatusJSON(http.StatusBadRequest, errors.New(response_error.Error()))
