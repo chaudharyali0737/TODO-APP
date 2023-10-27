@@ -33,10 +33,14 @@ func GetSingleTodos(c *gin.Context) {
 	id := c.Param("id")
 	result := []Todo{}
 	tx := db.DB.Model(db.Todos{}).Where("id=?", id).Find(&result)
-	if tx.Error != nil || tx.RowsAffected == 0 {
+	if tx.RowsAffected == 0 {
+		c.IndentedJSON(http.StatusOK, &result)
+	}
+	if tx.Error != nil {
 		c.Status(http.StatusBadRequest)
 		return
 	}
+
 	c.IndentedJSON(http.StatusOK, &result)
 }
 func Insert(c *gin.Context) {
